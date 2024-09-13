@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block body_block %}
+  <div class="container my-5">
+    <div class="my-5">
+        <h2>Your Cart</h2>
+    </div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col" width="15%">#</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">Quantity</th>
+                <th scope="col" align="border-right">Price</th>
+                <th scope="col">Remove</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cart in carts %}
+            <tr>
+                <th scope="row">{{forloop.counter}}</th>
+                <td>{{cart.item.name}}</td>
+                <td>
+                    <a href="{% url 'App_Order:decrease' pk=cart.item.pk %}" class="mr-2"><span class="badge badge-light" style="color:rgb(79, 5, 176);"><i class="fa fa-minus"></i></span></a>
+                    {{cart.quantity}}
+                    <!-- <a href="#" class="mr-2"><span class="badge badge-light"><i class="fa fa-plus"></i></span></a> -->
+                    <a href="{% url 'App_Order:increase' pk=cart.item.pk %}" class="mr-2">
+                        <span class="badge badge-light" style="color: rgb(79, 5, 176);">
+                            <i class="fa-solid fa-plus"></i>
+                        </span>
+                    </a>
+                    
+                </td>
+                <td align="right">&#2547; {{cart.get_total | floatformat:2}}</td>
+                <td><a href="{% url 'App_Order:remove' pk=cart.item.pk %}" class="btn btn-danger btn-sm" style="border-radius: 6px; padding: 2px 6px; box-shadow: px 4px 6px rgba(0, 0, 0, 0.1);">Remove From Cart</a></td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <th scope="row"></th>
+                <td colspan="2">Total</td>
+                <td align="right">&#2547; {{order.get_totals | floatformat:2 }}</td>
+                <td></td>
+            </tr>
+            <tr style="border: 0;">
+                <th scope="row" style="border: 0;">
+                    <td colspan="4" class="text-end" style="border: 0;">
+                        <a href="{% url 'App_Shop:home' %}" class="btn btn-warning me-4">Continue Shopping</a>
+                        <a href="{% url 'App_Payment:checkout' %}" class="btn btn-success me-4">Proceed to Checkout</a>
+                    </td>
+                </th>
+            </tr>
+        </tbody>
+    </table>
+  </div>
+{% endblock body_block %}
